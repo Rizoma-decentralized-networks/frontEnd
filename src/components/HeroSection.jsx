@@ -1,7 +1,7 @@
 export default function HeroSection() {
   return (
     <div
-      className="hero min-h-screen"
+      className="hero min-h-screen "
       style={{
         backgroundImage:
           "url('/heroWelcome.jpg')",
@@ -14,8 +14,8 @@ export default function HeroSection() {
           <p className="mb-5">
           Mapea, comparte y conecta lo que florece en lo colectivo.
           </p>
-          <button className="btn btn-primary">Ver iniciativas</button>
-          <button className="btn btn-primary">Ver mapa</button>
+          <button className="btn btn-primary mr-4">Ver iniciativas</button>
+          <button className="btn btn-secondary">Ver mapa</button>
         </div>
       </div>
     </div>
