@@ -1,6 +1,10 @@
+import RegisterSection from "../components/sections/RegisterSection";
+
 export default function RegisterPage() {    
     return (    
-        <>Register Page</>
+        <>
+        <RegisterSection/>
+        </>
     )
 }
 // This is a placeholder for the RegisterPage component.
