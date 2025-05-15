@@ -1,22 +1,17 @@
 import NavBar from "./components/NavBar";
-import HeroSection from "./components/HeroSection";
 import Footer from "./components/Footer";
 
 import "./App.css";
+import HomePage from "./pages/HomePage";
 
 function App() {
   return (
     <>
-      <div className="flex flex-col h-screen overflow-hidden">  
-        <NavBar />
-        <main className="flex-grow overflow-hidden">
-          <HeroSection />
-        </main>
-        <Footer />
-      </div>
+      <NavBar />
+      <HomePage/>
+      <Footer />
     </>
   );
 }
-
 
 export default App;

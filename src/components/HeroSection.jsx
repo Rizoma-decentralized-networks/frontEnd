@@ -1,7 +1,7 @@
 export default function HeroSection() {
   return (
     <div
-      className="hero min-h-screen "
+      className="hero min-h-screen"
       style={{
         backgroundImage:
           "url('/heroWelcome.jpg')",
