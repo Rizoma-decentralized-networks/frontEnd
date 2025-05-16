@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import CreateUserButton from '../buttons/CreateUserButton';
 import CancelButton from '../buttons/CancelButton';
+import { postUser } from '../../services/apiUsers';
 
 const RegisterSection = () => {
   const { 
@@ -11,7 +12,7 @@ const RegisterSection = () => {
     reset 
   } = useForm({
     defaultValues: {
-      name: '',
+      username: '',
       email: '',
       password: '',
       userImageUrl: ''
@@ -21,19 +22,22 @@ const RegisterSection = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (userData) => {
     setIsLoading(true);
-    // Simulación de envío de datos
-    console.log("Form data:", data);
+    setError(null);
+    console.log("Form data:", userData);
     
-    // Aquí iría tu lógica de envío al backend
-    // Por ejemplo, una llamada fetch o axios
+    const result = await postUser(userData);
     
-    setTimeout(() => {
-      setIsLoading(false);
-      // Si hay un error del servidor, lo manejarías así:
-      // setError("Error message from server");
-    }, 1500);
+    if (result.success) {
+      console.log("User created successfully:", result.data);
+      reset(); 
+  
+    } else {
+      setError(result.error.message);
+    }
+    
+    setIsLoading(false);
   };
 
   const handleClear = () => {
@@ -52,14 +56,14 @@ const RegisterSection = () => {
             <input
               type="text"
               placeholder="Username"
-              className={`input input-bordered w-full ${errors.name ? 'input-error' : ''}`}
-              {...register("name", { 
+              className={`input input-bordered w-full ${errors.username ? 'input-error' : ''}`}
+              {...register("username", { 
                 required: "Username is required",
                 minLength: { value: 3, message: "Username must be at least 3 characters" },
                 maxLength: { value: 30, message: "Username cannot exceed 30 characters" }
               })}
             />
-            {errors.name && <div className="text-xs text-error text-left mt-1">{errors.name.message}</div>}
+            {errors.username && <div className="text-xs text-error text-left mt-1">{errors.username.message}</div>}
           </div>
 
           <div className="form-control mb-4">
