@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import CreateUserButton from '../buttons/CreateUserButton';
+import RegisterButton from '../buttons/RegisterButton';
 import CancelButton from '../buttons/CancelButton';
 import { postUser } from '../../services/apiUsers';
 
@@ -136,7 +136,7 @@ const RegisterSection = () => {
           </div>
 
           <div className="flex justify-center gap-4">
-            <CreateUserButton 
+            <RegisterButton 
               isLoading={isLoading}
             />
             

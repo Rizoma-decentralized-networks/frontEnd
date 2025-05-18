@@ -4,7 +4,7 @@ const CancelButton = ({ onClick, disabled }) => {
   return (
     <button
       type="button"
-      className="btn btn-sm bg-secondary text-white border-none hover"
+      className="btn btn-secondary"
       onClick={onClick}
       disabled={disabled}
     >
