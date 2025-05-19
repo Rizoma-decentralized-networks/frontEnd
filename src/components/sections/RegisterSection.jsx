@@ -40,9 +40,6 @@ const RegisterSection = () => {
     setIsLoading(false);
   };
 
-  const handleClear = () => {
-    reset();
-  };
 
   return (
     <div className="bg-gray-100 flex items-center justify-center min-h-[70vh]">
@@ -141,8 +138,7 @@ const RegisterSection = () => {
             />
             
             <CancelButton
-              onClick={handleClear}
-              disabled={isLoading}
+              onCancel={reset}
             />
           </div>
         </form>

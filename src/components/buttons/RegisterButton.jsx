@@ -1,6 +1,7 @@
 import React from 'react';
 
 const RegisterButton = ({ onSubmit, isLoading }) => {
+  
   return (
     <button
       type="submit"
@@ -10,7 +11,7 @@ const RegisterButton = ({ onSubmit, isLoading }) => {
       {isLoading ? (
         <>
           <span className="loading loading-spinner"></span>
-          Loading...
+          Registering...
         </>
       ) : (
         'Register'
