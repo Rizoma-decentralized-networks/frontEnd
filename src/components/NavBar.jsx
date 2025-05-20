@@ -18,7 +18,7 @@ export default function NavBar() {
               <summary>Iniciar Sesión</summary>
               <ul className="bg-base-100 rounded-t-none p-2">
                 <li>
-                  <a>Login</a>
+                  <Link to="/login">Login</Link>  
                 </li>
                 <li>
                   <Link to="/register">Registro</Link>

@@ -14,6 +14,7 @@ const AppRouter = () => {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/post-mark" element={<PostMarkPage />} />
+            
         </Routes>   
         </Layout>
         </BrowserRouter>
