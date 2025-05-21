@@ -13,76 +13,68 @@ function PostMarkForm() {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm();
+  } = useForm({
+    mode: "onTouched",
+  });
 
   const onSubmit = async (dataMark) => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
-    
       const userId = 1;
-      
-      
+
       const markData = {
         title: dataMark.title,
         description: dataMark.description,
         location: dataMark.location,
-       
-        imageUrl: "https://picsum.photos/200/300", 
-        tag: {
-          tagId: getTagId(dataMark.tag),
-          tag: dataMark.tag.toLowerCase()
-        },
-        category: {
-          categoryId: getCategoryId(dataMark.category),
-          category: dataMark.category.toLowerCase()
-        }
+        imageUrl: "https://picsum.photos/200/300",
+        tag: getTagId(dataMark.tag),
+        category: getCategoryId(dataMark.category)
       };
-      
-      console.log('Enviando datos:', markData, 'userId:', userId);
-    
+
+      console.log("Enviando datos:", markData, "userId:", userId);
+
       const result = await postMark(markData, userId);
-      console.log('Marcador creado:', result);
-      
+      console.log("Marcador creado:", result);
+
       setIsSubmitted(true);
       reset();
     } catch (err) {
-      console.error('Error completo:', err);
-      
+      console.error("Error completo:", err);
+
       if (err.response && err.response.data) {
-        console.error('Detalles del error del servidor:', err.response.data);
+        console.error("Detalles del error del servidor:", err.response.data);
         setError(`Error del servidor: ${JSON.stringify(err.response.data)}`);
       } else {
-        setError(err.message || 'Ocurrió un error al crear el marcador');
+        setError(err.message || "Ocurrió un error al crear el marcador");
       }
     } finally {
       setIsLoading(false);
     }
   };
 
-  
   const getTagId = (tagName) => {
     const tagMap = {
-      'Environment': 1,
-      'Feminist': 2,
-      'Public Service': 3,
-      'Tenement': 4,
-      'Urbanism': 5,
-      'Mobility': 6,
-      'Culture': 7,
-      'Economy and employment': 8,
-      'Sport': 9,
-      'Democracy memory': 10
+      "Environment": 1,
+      "Feminist": 2,
+      "PublicService": 3,
+      "Tenement": 4,
+      "Urbanism": 5,
+      "Mobility": 6,
+      "Culture": 7,
+      "Economy and employment": 8,
+      "Sport": 9,
+      "DemocracyMemory": 10,
     };
-    return tagMap[tagName] || 1; 
+    return tagMap[tagName] || 1;
   };
-  
+
   const getCategoryId = (categoryName) => {
     const categoryMap = {
-      'Proposals': 1,
-      'Initiatives': 2,
-      'Conflicts': 3
+      Proposals: 1,
+      Initiatives: 2,
+      Conflicts: 3,
     };
     return categoryMap[categoryName] || 1;
   };
@@ -116,11 +108,15 @@ function PostMarkForm() {
                 <input
                   type="file"
                   accept="image/*"
-                  {...register("file", { required: "An image file is required" })}
+                  {...register("file", {
+                    required: "An image file is required",
+                  })}
                   className="file-input file-input-secondary w-full"
                 />
                 {errors.file && (
-                  <p className="text-red-500 text-sm mt-1">{errors.file.message}</p>
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.file.message}
+                  </p>
                 )}
 
                 <div className="grid grid-cols-2 gap-4 mt-4">
@@ -150,7 +146,9 @@ function PostMarkForm() {
                   <div>
                     <label className="label">Tag</label>
                     <select
-                      {...register("tag", { required: "A tag must be selected" })}
+                      {...register("tag", {
+                        required: "A tag must be selected",
+                      })}
                       className="select select-secondary w-full"
                       defaultValue=""
                     >
@@ -169,7 +167,9 @@ function PostMarkForm() {
                       <option>Democracy memory</option>
                     </select>
                     {errors.tag && (
-                      <p className="text-red-500 text-sm mt-1">{errors.tag.message}</p>
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.tag.message}
+                      </p>
                     )}
                   </div>
                 </div>
@@ -185,21 +185,28 @@ function PostMarkForm() {
                   className="input input-secondary w-full"
                 />
                 {errors.title && (
-                  <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.title.message}
+                  </p>
                 )}
 
                 <label className="label mt-2">Description</label>
                 <textarea
                   {...register("description", {
                     required: "Description is required",
-                    maxLength: { value: 500, message: "Description is too long. Max 500 characters." },
+                    maxLength: {
+                      value: 500,
+                      message: "Description is too long. Max 500 characters.",
+                    },
                   })}
                   placeholder="Enter description"
                   className="textarea textarea-secondary w-full"
                   rows="3"
                 ></textarea>
                 {errors.description && (
-                  <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.description.message}
+                  </p>
                 )}
 
                 <label className="label mt-2">Location</label>
@@ -224,14 +231,19 @@ function PostMarkForm() {
                     type="search"
                     {...register("location", {
                       required: "Location is required",
-                      maxLength: { value: 100, message: "Location is too long" },
+                      maxLength: {
+                        value: 100,
+                        message: "Location is too long",
+                      },
                     })}
                     className="grow"
                     placeholder="Search location"
                   />
                 </label>
                 {errors.location && (
-                  <p className="text-red-500 text-sm mt-1">{errors.location.message}</p>
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.location.message}
+                  </p>
                 )}
 
                 <div className="flex gap-4 justify-center mt-6">

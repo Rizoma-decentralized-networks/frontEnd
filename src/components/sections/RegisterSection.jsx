@@ -84,8 +84,8 @@ const RegisterSection = () => {
                       message: "Username cannot exceed 30 characters",
                     },
                     pattern: {
-                      value: /^[^\s]+$/,
-                      message: "Username cannot contain spaces",
+                      value: /^[a-zA-Z0-9_-]+$/,
+                      message: "Username can only contain letters, numbers, underscores and hyphens",
                     }
                   })}
                 />
