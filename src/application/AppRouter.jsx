@@ -4,6 +4,7 @@ import LoginPage from '../pages/LoginPage';
 import App from '../App';
 import Layout from '../components/Layout';
 import PostMarkPage from '../pages/PostMakPage';
+import ExplorePage from '../pages/ExplorePage';
 
 const AppRouter = () => {
     return (
@@ -14,7 +15,7 @@ const AppRouter = () => {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/post-mark" element={<PostMarkPage />} />
-            
+            <Route path="/explore" element={<ExplorePage />} />
         </Routes>   
         </Layout>
         </BrowserRouter>

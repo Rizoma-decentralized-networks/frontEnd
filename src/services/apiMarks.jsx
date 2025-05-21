@@ -24,4 +24,10 @@ export const postMark = async (mark, userId) => {
   } catch (error) {
     return handleApiError(error, "posting mark");
   }
+
+};
+
+export const getAllMarks = async () => {
+  const response = await axios.get(`${API_URL}`);
+  return response.data;
 };

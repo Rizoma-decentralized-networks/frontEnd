@@ -1,3 +1,6 @@
+import { Link } from "react-router";
+
+
 export default function HeroSection() {
   return (
     <div
@@ -14,7 +17,9 @@ export default function HeroSection() {
           <p className="mb-5">
           Mapea, comparte y conecta lo que florece en lo colectivo.
           </p>
-          <button className="btn btn-primary mr-4">Ver iniciativas</button>
+          <Link to="/explore">
+            <button className="btn btn-primary mr-4">Ver iniciativas</button>
+          </Link>
           <button className="btn btn-secondary">Ver mapa</button>
         </div>
       </div>

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import MarkCard from "../components/MarkCard";
-import Pagination from "../components/Pagination";
-import SearchFilter from "../components/searchFilter/SearchFilter";
+import MarkCard from "./MarkCard";
+import Pagination from "./Pagination";
+//import SearchFilter from "./searchFilter/SearchFilter";
 import { getAllMarks } from "../services/apiMarks";
+import { Link } from "react-router";
 
 function ExploreMarks() {
   const [marks, setMarks] = useState([]);
@@ -39,8 +38,8 @@ function ExploreMarks() {
 
   return (
     <>
-      <Navbar />
-      <SearchFilter setMarks={setMarks} />
+
+      {/* <SearchFilter setMarks={setMarks} /> */}
 
       {loading ? (
         <div className="flex justify-center items-center h-64">
@@ -72,8 +71,6 @@ function ExploreMarks() {
           onPageChange={(page) => setCurrentPage(page)}
         />
       )}
-
-      <Footer />
     </>
   );
 }
