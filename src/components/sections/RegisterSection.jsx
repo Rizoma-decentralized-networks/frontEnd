@@ -18,20 +18,24 @@ const RegisterSection = () => {
       password: "",
       userImageUrl: "",
     },
+    mode: "onChange",
   });
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
 
   const onSubmit = async (userData) => {
     setIsLoading(true);
     setError(null);
+    setSuccess(false);
     console.log("Form data:", userData);
 
     const result = await postUser(userData);
 
     if (result.success) {
       console.log("User created successfully:", result.data);
+      setSuccess(true);
       reset();
     } else {
       setError(result.error.message);
@@ -54,6 +58,11 @@ const RegisterSection = () => {
         <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
           <div className="card-body">
             {error && <div className="alert alert-error">{error}</div>}
+            {success && (
+              <div className="alert alert-success">
+                User registered successfully! You can now log in.
+              </div>
+            )}
 
             <form onSubmit={handleSubmit(onSubmit)}>
               <fieldset className="fieldset">
@@ -74,6 +83,10 @@ const RegisterSection = () => {
                       value: 30,
                       message: "Username cannot exceed 30 characters",
                     },
+                    pattern: {
+                      value: /^[^\s]+$/,
+                      message: "Username cannot contain spaces",
+                    }
                   })}
                 />
                 {errors.username && (
