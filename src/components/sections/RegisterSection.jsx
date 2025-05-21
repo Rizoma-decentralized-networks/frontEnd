@@ -84,10 +84,8 @@ const RegisterSection = () => {
 
                 <label className="label">Email</label>
                 <input
-                  type="email"
-                  className={`input w-full ${
-                    errors.email ? "input-error" : ""
-                  }`}
+                  type="text"
+                  className={`input w-full ${errors.email ? "input-error" : ""}`}
                   placeholder="mail@site.com"
                   {...register("email", {
                     required: "Email is required",
@@ -97,7 +95,7 @@ const RegisterSection = () => {
                     },
                   })}
                 />
-                {errors.email && (
+                {errors.email && errors.email.message && (
                   <div className="text-xs text-error mt-1">
                     {errors.email.message}
                   </div>
@@ -106,9 +104,7 @@ const RegisterSection = () => {
                 <label className="label">Password</label>
                 <input
                   type="password"
-                  className={`input w-full ${
-                    errors.password ? "input-error" : ""
-                  }`}
+                  className={`input w-full ${errors.password ? "input-error" : ""}`}
                   placeholder="Password"
                   {...register("password", {
                     required: "Password is required",
@@ -123,6 +119,11 @@ const RegisterSection = () => {
                     },
                   })}
                 />
+                {errors.password && (
+                  <div className="text-xs text-error mt-1">
+                    {errors.password.message}
+                  </div>
+                )}
 
                 <div className="form-control mb-4">
                   <label className="label">Profile image URL</label>
