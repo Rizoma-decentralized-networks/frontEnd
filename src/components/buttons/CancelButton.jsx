@@ -1,16 +1,15 @@
 import React from 'react';
 
-const CancelButton = ({ onClick, disabled }) => {
+function CancelButton({ onCancel }) {
   return (
     <button
       type="button"
-      className="btn btn-sm bg-secondary text-white border-none hover"
-      onClick={onClick}
-      disabled={disabled}
+      className="btn btn-secondary"
+      onClick={onCancel}
     >
       Cancel
     </button>
   );
-};
+}
 
 export default CancelButton;

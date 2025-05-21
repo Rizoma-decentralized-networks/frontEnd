@@ -1,16 +1,17 @@
 import React from 'react';
 
-const CreateUserButton = ({ onSubmit, isLoading }) => {
+const RegisterButton = ({ onSubmit, isLoading }) => {
+  
   return (
     <button
       type="submit"
-      className="btn btn-sm btn-primary"
+      className="btn btn-primary"
       disabled={isLoading}
     >
       {isLoading ? (
         <>
           <span className="loading loading-spinner"></span>
-          Loading...
+          Registering...
         </>
       ) : (
         'Register'
@@ -19,4 +20,4 @@ const CreateUserButton = ({ onSubmit, isLoading }) => {
   );
 };
 
-export default CreateUserButton;
+export default RegisterButton;
