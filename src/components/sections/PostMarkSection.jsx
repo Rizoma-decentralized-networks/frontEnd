@@ -5,7 +5,8 @@ const PostMarkSection = () => {
   const { 
     register, 
     handleSubmit, 
-    formState: { errors }, 
+    formState, 
+    control,
     reset,
     onSubmit, 
     isLoading, 
@@ -16,7 +17,8 @@ const PostMarkSection = () => {
   const formProps = {
     register,
     handleSubmit,
-    errors,
+    formState,
+    control,
     reset,
     onSubmit,
     isLoading,

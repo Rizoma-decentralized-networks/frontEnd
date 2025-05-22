@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useWatch } from "react-hook-form";
 import PublishMark from "../buttons/PublishMark";
 import CancelButton from "../buttons/CancelButton";
 import SelectField from "./SelectField";
@@ -8,7 +9,8 @@ import { getAllTags } from "../../services/apiTags";
 const PostMarkForm = ({
   register,
   handleSubmit,
-  errors,
+  formState: { errors },
+  control,
   reset,
   onSubmit,
   isLoading,
@@ -20,6 +22,24 @@ const PostMarkForm = ({
   const [categories, setCategories] = useState(initialCategories);
   const [tags, setTags] = useState(initialTags);
   const [isLoadingData, setIsLoadingData] = useState(false);
+
+  const titleValue = useWatch({
+    control,
+    name: "title",
+    defaultValue: ""
+  });
+  
+  const descriptionValue = useWatch({
+    control,
+    name: "description",
+    defaultValue: ""
+  });
+  
+  const locationValue = useWatch({
+    control,
+    name: "location",
+    defaultValue: ""
+  });
 
   useEffect(() => {
     const loadData = async () => {
@@ -83,18 +103,17 @@ const PostMarkForm = ({
 
             {isLoading && <div>Loading...</div>}
 
-            
-
             <form onSubmit={handleSubmit(onSubmit)}>
               <fieldset className="fieldset">
                 <label className="label">Image</label>
+          
                 <input
                   type="file"
                   accept="image/*"
                   {...register("file", {
                     required: "An image file is required",
                   })}
-                  className="file-input file-input-secondary w-full"
+                  className={`file-input w-full ${errors?.file ? 'file-input-error' : 'file-input-secondary'}`}
                 />
                 {errors?.file && (
                   <p className="text-red-500 text-sm mt-1">
@@ -107,7 +126,7 @@ const PostMarkForm = ({
                     <label className="label">Category</label>
                     <select
                       {...register("category", { required: "Category is required" })}
-                      className="select select-secondary w-full"
+                      className={`select w-full ${errors?.category ? 'select-error' : 'select-secondary'}`}
                       defaultValue=""
                     >
                       {categoryOptions.map((option, index) => (
@@ -131,7 +150,7 @@ const PostMarkForm = ({
                     <label className="label">Tag</label>
                     <select
                       {...register("tag", { required: "Tag is required" })}
-                      className="select select-secondary w-full"
+                      className={`select w-full ${errors?.tag ? 'select-error' : 'select-secondary'}`}
                       defaultValue=""
                     >
                       {tagOptions.map((option, index) => (
@@ -152,43 +171,75 @@ const PostMarkForm = ({
                   </div>
                 </div>
 
-                <label className="label mt-2">Title</label>
+                <label className="label mt-2">
+                  Title
+                </label>
                 <input
                   type="text"
                   {...register("title", {
                     required: "Title is required",
-                    maxLength: { value: 100, message: "Title is too long" },
+                    minLength: { value: 3, message: "Title must be at least 3 characters" },
+                    maxLength: { value: 100, message: "Title cannot exceed 100 characters" },
+                    pattern: {
+                      value: /^[\p{L}\p{N}\s]+$/u,
+                      message: "Special characters are not allowed in title"
+                    }
                   })}
                   placeholder="Enter title"
-                  className="input input-secondary w-full"
+                  className={`input w-full ${errors?.title ? 'input-error' : 'input-secondary'}`}
                 />
-                {errors?.title && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.title.message}
-                  </p>
-                )}
+                <div className="flex justify-between items-center mt-1">
+                  {errors?.title && (
+                    <p className="text-red-500 text-sm">
+                      {errors.title.message}
+                    </p>
+                  )}
+                  <div className={`text-xs ${
+                    titleValue.length > 100 ? 'text-red-500' : 
+                    titleValue.length > 80 ? 'text-amber-500' : 
+                    'text-gray-500'
+                  }`}>
+                    {titleValue.length}/100
+                  </div>
+                </div>
 
-                <label className="label mt-2">Description</label>
+                <label className="label mt-2">
+                  Description
+               
+                </label>
                 <textarea
                   {...register("description", {
                     required: "Description is required",
-                    maxLength: {
-                      value: 500,
-                      message: "Description is too long. Max 500 characters.",
-                    },
+                    minLength: { value: 10, message: "Description must be at least 10 characters" },
+                    maxLength: { value: 2000, message: "Description cannot exceed 2000 characters" },
+                    pattern: {
+                      value: /^[^\/\*<>|]+$/,
+                      message: "Special characters like /, *, <, >, | are not allowed in description"
+                    }
                   })}
                   placeholder="Enter description"
-                  className="textarea textarea-secondary w-full"
+                  className={`textarea w-full ${errors?.description ? 'textarea-error' : 'textarea-secondary'}`}
                   rows="3"
                 ></textarea>
-                {errors?.description && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.description.message}
-                  </p>
-                )}
+                <div className="flex justify-between items-center mt-1">
+                  {errors?.description && (
+                    <p className="text-red-500 text-sm">
+                      {errors.description.message}
+                    </p>
+                  )}
+                  <div className={`text-xs ${
+                    descriptionValue.length > 2000 ? 'text-red-500' : 
+                    descriptionValue.length > 1600 ? 'text-amber-500' : 
+                    'text-gray-500'
+                  }`}>
+                    {descriptionValue.length}/2000
+                  </div>
+                </div>
 
-                <label className="label mt-2">Location</label>
-                <label className="input input-secondary flex items-center gap-2 w-full">
+                <label className="label mt-2">
+                  Location
+                </label>
+                <label className={`input flex items-center gap-2 w-full ${errors?.location ? 'input-error' : 'input-secondary'}`}>
                   <svg
                     className="h-5 w-5 opacity-50"
                     xmlns="http://www.w3.org/2000/svg"
@@ -209,20 +260,29 @@ const PostMarkForm = ({
                     type="search"
                     {...register("location", {
                       required: "Location is required",
-                      maxLength: {
-                        value: 100,
-                        message: "Location is too long",
-                      },
+                      pattern: {
+                        value: /^[^\/\*<>|]+$/,
+                        message: "Special characters like /, *, <, >, | are not allowed in location"
+                      }
                     })}
                     className="grow"
                     placeholder="Search location"
                   />
                 </label>
-                {errors?.location && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.location.message}
-                  </p>
-                )}
+                <div className="flex justify-between items-center mt-1">
+                  {errors?.location && (
+                    <p className="text-red-500 text-sm">
+                      {errors.location.message}
+                    </p>
+                  )}
+                  <div className={`text-xs ${
+                    locationValue.length > 100 ? 'text-red-500' : 
+                    locationValue.length > 80 ? 'text-amber-500' : 
+                    'text-gray-500'
+                  }`}>
+                    {locationValue.length}/100
+                  </div>
+                </div>
 
                 <div className="flex gap-4 justify-center mt-6">
                   <PublishMark isLoading={isLoading} />
