@@ -11,17 +11,17 @@ export default function NavBar() {
       <div className="flex-none">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <Link to="/post-mark">Crear iniciativa</Link>
+            <Link to="/post-mark">Create Initiative</Link>
           </li>
           <li>
             <details>
-              <summary>Iniciar Sesión</summary>
+              <summary>Sign In</summary>
               <ul className="bg-base-100 rounded-t-none p-2">
                 <li>
                   <Link to="/login">Login</Link>  
                 </li>
                 <li>
-                  <Link to="/register">Registro</Link>
+                  <Link to="/register">Register</Link>
                 </li>
               </ul>
             </details>

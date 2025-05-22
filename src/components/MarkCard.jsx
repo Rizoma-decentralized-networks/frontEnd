@@ -65,7 +65,7 @@ const MarkCard = ({ mark }) => {
 
         <div className="mt-4">
           <Link to={`/mark/${mark.id}`} className="w-full">
-            <button className="btn btn-primary w-full">Ver detalle</button>
+            <button className="btn btn-primary w-full">View Details</button>
           </Link>
         </div>
       </div>
