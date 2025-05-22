@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import MarkCard from "./MarkCard";
-import Pagination from "./Pagination";
-//import SearchFilter from "./searchFilter/SearchFilter";
-import { getAllMarks } from "../services/apiMarks";
+import MarkCard from "../MarkCard";
+import Pagination from "../Pagination";
+//import SearchFilter from "../searchFilter/SearchFilter";
+import { getAllMarks } from "../../services/apiMarks";
 import { Link } from "react-router";
 
 function ExploreMarks() {

@@ -1,6 +1,9 @@
+import { useEffect, useState } from "react";
 import PublishMark from "../buttons/PublishMark";
 import CancelButton from "../buttons/CancelButton";
 import SelectField from "./SelectField";
+import { getAllCategories } from "../../services/apiCategory";
+import { getAllTags } from "../../services/apiTags";
 
 const PostMarkForm = ({
   register,
@@ -10,29 +13,51 @@ const PostMarkForm = ({
   onSubmit,
   isLoading,
   isSubmitted,
-  error
+  error,
+  tags: initialTags = [],
+  categories: initialCategories = []
 }) => {
+  const [categories, setCategories] = useState(initialCategories);
+  const [tags, setTags] = useState(initialTags);
+  const [isLoadingData, setIsLoadingData] = useState(false);
+
+  useEffect(() => {
+    const loadData = async () => {
+      setIsLoadingData(true);
+      try {
+        const categoriesData = await getAllCategories();
+        const tagsData = await getAllTags();
+        
+        setCategories(categoriesData);
+        setTags(tagsData);
+      } catch (error) {
+        console.error("Error loading categories and tags:", error);
+      } finally {
+        setIsLoadingData(false);
+      }
+    };
+
+    if (initialCategories.length === 0 || initialTags.length === 0) {
+      loadData();
+    }
+  }, [initialCategories.length, initialTags.length]);
+  
   const categoryOptions = [
     { value: "", label: "Select Category", disabled: true },
-    { value: "Proposals", label: "Proposals" },
-    { value: "Initiatives", label: "Initiatives" },
-    { value: "Conflicts", label: "Conflicts" }
+    ...categories.map(cat => ({
+      value: cat.categoryId?.toString() || "",
+      label: cat.category || "Unknown"
+    }))
   ];
 
   const tagOptions = [
     { value: "", label: "Select Tag", disabled: true },
-    { value: "Environment", label: "Environment" },
-    { value: "Feminist", label: "Feminist" },
-    { value: "Public Service", label: "Public Service" },
-    { value: "Tenement", label: "Tenement" },
-    { value: "Urbanism", label: "Urbanism" },
-    { value: "Mobility", label: "Mobility" },
-    { value: "Culture", label: "Culture" },
-    { value: "Economy and employment", label: "Economy and employment" },
-    { value: "Sport", label: "Sport" },
-    { value: "Democracy memory", label: "Democracy memory" }
+    ...tags.map(tag => ({
+      value: tag.tagId?.toString() || "",
+      label: tag.tag || "Unknown"
+    }))
   ];
-
+  
   return (
     <div className="hero bg-base-200 min-h-screen">
       <div className="hero-content flex-col lg:flex-row-reverse">
@@ -56,6 +81,10 @@ const PostMarkForm = ({
               </div>
             )}
 
+            {isLoading && <div>Loading...</div>}
+
+            
+
             <form onSubmit={handleSubmit(onSubmit)}>
               <fieldset className="fieldset">
                 <label className="label">Image</label>
@@ -74,25 +103,53 @@ const PostMarkForm = ({
                 )}
 
                 <div className="grid grid-cols-2 gap-4 mt-4">
-                  <SelectField
-                    label="Category"
-                    name="category"
-                    options={categoryOptions}
-                    register={register}
-                    error={errors?.category}
-                    required={true}
-                    defaultValue=""
-                  />
+                  <div>
+                    <label className="label">Category</label>
+                    <select
+                      {...register("category", { required: "Category is required" })}
+                      className="select select-secondary w-full"
+                      defaultValue=""
+                    >
+                      {categoryOptions.map((option, index) => (
+                        <option
+                          key={index}
+                          value={option.value}
+                          disabled={option.disabled}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                    {errors?.category && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.category.message}
+                      </p>
+                    )}
+                  </div>
 
-                  <SelectField
-                    label="Tag"
-                    name="tag"
-                    options={tagOptions}
-                    register={register}
-                    error={errors?.tag}
-                    required={true}
-                    defaultValue=""
-                  />
+                  <div>
+                    <label className="label">Tag</label>
+                    <select
+                      {...register("tag", { required: "Tag is required" })}
+                      className="select select-secondary w-full"
+                      defaultValue=""
+                    >
+                      {tagOptions.map((option, index) => (
+                        <option
+                          key={index}
+                          value={option.value}
+                          disabled={option.disabled}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                    {errors?.tag && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.tag.message}
+                      </p>
+                    )}
+                  </div>
                 </div>
 
                 <label className="label mt-2">Title</label>

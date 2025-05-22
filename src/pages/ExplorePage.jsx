@@ -1,5 +1,5 @@
 import React from "react";
-import ExploreMarks from "../components/ExploreMarks";
+import ExploreMarks from "../components/sections/ExploreMarks";
 
 const ExplorePage = () => {
   return <ExploreMarks />;

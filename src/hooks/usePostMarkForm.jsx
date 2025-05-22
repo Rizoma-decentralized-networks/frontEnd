@@ -1,11 +1,15 @@
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { postMark } from "../services/apiMarks";
+import { getAllTags } from "../services/apiTags";
+import { getAllCategories } from "../services/apiCategory";
 
 export const usePostMarkForm = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [tags, setTags] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   const formMethods = useForm({ 
     mode: "onTouched",
@@ -19,26 +23,46 @@ export const usePostMarkForm = () => {
     }
   });
   
-  const { reset, handleSubmit } = formMethods;
+  const { reset, handleSubmit, formState } = formMethods;
 
-  const getTagId = (tagName) => ({
-    "Environment": 1,
-    "Feminist": 2,
-    "Public Service": 3,
-    "Tenement": 4,
-    "Urbanism": 5,
-    "Mobility": 6,
-    "Culture": 7,
-    "Economy and employment": 8,
-    "Sport": 9,
-    "Democracy memory": 10,
-  }[tagName] || 1);
+  const loadData = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const [tagsData, categoriesData] = await Promise.all([
+        getAllTags(),
+        getAllCategories()
+      ]);
+      
+           if (Array.isArray(tagsData)) {
+        setTags(tagsData);
+      }
+      
+      if (Array.isArray(categoriesData)) {
+        setCategories(categoriesData);
+      }
+      
+      setError(null);
+    } catch (err) {
+      console.error("Error loading data:", err);
+      setError("Error loading categories and tags");
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
-  const getCategoryId = (categoryName) => ({
-    Proposals: 1,
-    Initiatives: 2,
-    Conflicts: 3,
-  }[categoryName] || 1);
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
+
+  const getTagId = (tagName) => {
+    const tagObj = tags.find(t => t.tag === tagName);
+    return tagObj ? tagObj.tagId : null;
+  };
+
+  const getCategoryId = (categoryName) => {
+    const categoryObj = categories.find(c => c.category === categoryName);
+    return categoryObj ? categoryObj.categoryId : null;
+  };
 
   const onSubmit = async (dataMark) => {
     setIsLoading(true);
@@ -50,8 +74,8 @@ export const usePostMarkForm = () => {
         description: dataMark.description,
         location: dataMark.location,
         imageUrl: "https://picsum.photos/200/300", // En un caso real, subirías el archivo
-        tag: getTagId(dataMark.tag),
-        category: getCategoryId(dataMark.category),
+        category: parseInt(dataMark.category) || null,
+        tag: parseInt(dataMark.tag) || null,
       };
       await postMark(markData, userId);
       setIsSubmitted(true);
@@ -68,6 +92,9 @@ export const usePostMarkForm = () => {
     onSubmit, 
     isLoading, 
     isSubmitted, 
-    error 
+    error,
+    tags,
+    categories,
+    loadData
   };
 };

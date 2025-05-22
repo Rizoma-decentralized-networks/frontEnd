@@ -16,6 +16,7 @@ export const postMark = async (mark, userId) => {
       category: mark.category,
       tag: mark.tag
     };
+
     
     console.log("Datos finales enviados al servidor:", dataToSend);
     
